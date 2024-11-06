@@ -1,6 +1,8 @@
 # Build EKS Cluster with Opentofu
 
 ## Requirements 
+- AWS Account 
+- AWS CLI
 - 1.8.4 Opentofu
 
 ## Deploying an infra instance
