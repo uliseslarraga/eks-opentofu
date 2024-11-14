@@ -25,3 +25,7 @@ tofu plan -var-file="./env/<env>/dev.auto.tfvars"
 ```
 tofu apply -var-file="./env/<env>/dev.auto.tfvars"
 ```
+4. Create Kubeconfig file
+```
+aws eks update-kubeconfig --name $(tofu output -raw -var-file="./env/dev/dev.auto.tfvars" cluster_name)
+```

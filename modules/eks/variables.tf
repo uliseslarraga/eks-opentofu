@@ -37,3 +37,23 @@ variable "min_size" {
   type        = any
   description = "Min size of node group"
 }
+
+variable "k8s_version" {
+  type        = any
+  description = "Kubernetes version configured on EKS cluster"
+}
+
+variable "vpc_cni_version" {
+  type        = any
+  description = "VPC CNI addon version"
+}
+
+variable "kube_proxy_version" {
+  type        = any
+  description = "kube-proxy addon version"
+}
+
+variable "coredns_version" {
+  type        = any
+  description = "Core DNS addon version"
+}
