@@ -22,6 +22,7 @@ module "eks" {
     max_size            = var.max_size
     min_size            = var.min_size
     k8s_version         = var.k8s_version
+    k8s_nodegr_version  = var.k8s_nodegr_version
     vpc_cni_version     = var.vpc_cni_version
     kube_proxy_version  = var.kube_proxy_version
     coredns_version     = var.coredns_version

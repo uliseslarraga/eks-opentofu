@@ -14,6 +14,7 @@ resource "aws_eks_node_group" "node_group" {
   node_role_arn   = var.node_role_arn
   subnet_ids      = var.private_subnets
   tags = merge({Name = "node-group-${var.environment}"}, var.tags)
+  version         = var.k8s_nodegr_version
   scaling_config {
     desired_size = var.desired_size
     max_size     = var.max_size
