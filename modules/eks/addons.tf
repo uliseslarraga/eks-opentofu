@@ -4,7 +4,10 @@ locals {
 
 
 resource "aws_eks_addon" "vpc-cni" {
-  depends_on = [aws_eks_cluster.cluster]
+  depends_on = [
+    aws_eks_cluster.cluster,
+    aws_eks_node_group.node_group
+  ]
   cluster_name      = aws_eks_cluster.cluster.name
   addon_name        = "vpc-cni"
   resolve_conflicts = "OVERWRITE"
@@ -15,18 +18,23 @@ resource "aws_eks_addon" "vpc-cni" {
 }
 
 resource "aws_eks_addon" "core-dns" {
-  depends_on = [aws_eks_cluster.cluster]
+  depends_on = [
+    aws_eks_cluster.cluster,
+    aws_eks_node_group.node_group
+  ]
   cluster_name      = aws_eks_cluster.cluster.name
   addon_name        = "coredns"
   resolve_conflicts = "OVERWRITE"
   configuration_values = file("${local.cni_config}/coredns.json")
   addon_version        = var.coredns_version
   preserve = true
-
 }
 
 resource "aws_eks_addon" "kube-proxy" {
-  depends_on = [aws_eks_cluster.cluster]
+  depends_on = [
+    aws_eks_cluster.cluster,
+    aws_eks_node_group.node_group
+  ]
   cluster_name      = aws_eks_cluster.cluster.name
   addon_name        = "kube-proxy"
   resolve_conflicts = "OVERWRITE"

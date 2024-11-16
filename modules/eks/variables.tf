@@ -43,6 +43,11 @@ variable "k8s_version" {
   description = "Kubernetes version configured on EKS cluster"
 }
 
+variable "k8s_nodegr_version" {
+  type        = any
+  description = "Kubernetes version configured on EKS Node group"
+}
+
 variable "vpc_cni_version" {
   type        = any
   description = "VPC CNI addon version"
