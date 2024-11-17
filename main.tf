@@ -34,5 +34,8 @@ module "k8s" {
     source            = "./modules/k8s"
     tags              = var.tags
     environment       = var.environment
+    aws_region        = var.aws_region
+    cluster_name      = module.eks.cluster_name
     eks_role_irsa_arn = module.iam.eks_role_irsa_arn
+    depends_on        = [module.eks]
 }
