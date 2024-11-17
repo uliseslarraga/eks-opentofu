@@ -29,3 +29,15 @@ tofu apply -var-file="./env/<env>/dev.auto.tfvars"
 ```
 aws eks update-kubeconfig --name $(tofu output -raw -var-file="./env/dev/dev.auto.tfvars" cluster_name)
 ```
+
+## Install AWS Controller
+
+There is a value.yml file with values to deploy an AWS controller with helm:
+
+```
+$ helm repo add eks https://aws.github.io/eks-charts
+
+$ helm repo update eks
+
+$ helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --values k8s/aws-controller/values-dev.yml
+```
