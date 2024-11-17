@@ -87,7 +87,7 @@ resource "aws_iam_role" "eks_role_irsa" {
       Action = "sts:AssumeRoleWithWebIdentity",
       Condition = {
         StringEquals = {
-            "${var.oidc_provider_url}:sub" = "system:serviceaccount:default:my-service-account"
+            "${var.oidc_provider_url}:sub" = "system:serviceaccount:kube-system:aws-load-balancer-controller-development"
             "${var.oidc_provider_url}:aud" = "sts.amazonaws.com"
           }
       }

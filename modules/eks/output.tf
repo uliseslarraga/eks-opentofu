@@ -11,5 +11,5 @@ output "oidc_provider_arn" {
 }
 
 output "oidc_provider_url" {
-  value = aws_eks_cluster.cluster.identity.0.oidc.0.issuer
+  value = aws_iam_openid_connect_provider.cluster.url
 }
