@@ -8,12 +8,7 @@ variable "environment" {
   description = "Env name"
 }
 
-variable "oidc_provider_arn" {
+variable "eks_role_irsa_arn" {
   type        = string
-  description = "OIDC provider arn"
-}
-
-variable "oidc_provider_url" {
-  type        = string
-  description = "OIDC provider url"
+  description = "IAM Role for Kubernetes Service Account"
 }

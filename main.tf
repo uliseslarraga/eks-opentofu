@@ -6,9 +6,11 @@ module "network" {
 }
 
 module "iam" {
-    source           = "./modules/iam"
-    tags             = var.tags
-    environment      = var.environment
+    source            = "./modules/iam"
+    oidc_provider_arn = module.eks.oidc_provider_arn
+    oidc_provider_url = module.eks.oidc_provider_url
+    tags              = var.tags
+    environment       = var.environment
 }
 
 module "eks" {
@@ -26,4 +28,11 @@ module "eks" {
     vpc_cni_version     = var.vpc_cni_version
     kube_proxy_version  = var.kube_proxy_version
     coredns_version     = var.coredns_version
+}
+
+module "k8s" {
+    source            = "./modules/k8s"
+    tags              = var.tags
+    environment       = var.environment
+    eks_role_irsa_arn = module.iam.eks_role_irsa_arn
 }
