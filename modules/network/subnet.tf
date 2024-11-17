@@ -4,7 +4,13 @@ resource "aws_subnet" "public_subnet" {
   cidr_block = cidrsubnet(aws_vpc.main_vpc.cidr_block, 8, count.index + 2)
   availability_zone = data.aws_availability_zones.available_zones.names[count.index]
   map_public_ip_on_launch = true
-  tags = merge({Name = "public-subnet-${count.index}"}, var.tags)
+  tags = merge(
+    {
+      Name = "public-subnet-${count.index}",
+      "kubernetes.io/role/elb" = "1"
+    }, 
+      var.tags
+  )
 }
 
 resource "aws_route_table" "public_route_table" {
@@ -29,7 +35,13 @@ resource "aws_subnet" "private_subnet" {
   vpc_id     = aws_vpc.main_vpc.id
   cidr_block = cidrsubnet(aws_vpc.main_vpc.cidr_block, 8, count.index)
   availability_zone = data.aws_availability_zones.available_zones.names[count.index]
-  tags = merge({Name = "private-subnet-${count.index}"}, var.tags)
+  tags = merge(
+    {
+      Name = "private-subnet-${count.index}",
+      "kubernetes.io/role/internal-elb" = "1"
+    }, 
+    var.tags
+  )
 }
 
 resource "aws_route_table" "private_route_table" {
