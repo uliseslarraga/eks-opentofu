@@ -1,0 +1,4 @@
+clusterName: eks-cluster-development 
+serviceAccount:
+  create: false
+  name: aws-load-balancer-controller-development #This value must be equal to the name of resource module/k8s/k8s_sa_controller
