@@ -5,3 +5,11 @@ output "cluster_endpoint" {
 output "cluster_name" {
   value = aws_eks_cluster.cluster.name
 }
+
+output "oidc_provider_arn" {
+  value = aws_iam_openid_connect_provider.cluster.arn
+}
+
+output "oidc_provider_url" {
+  value = aws_eks_cluster.cluster.identity.0.oidc.0.issuer
+}
