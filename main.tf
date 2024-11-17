@@ -29,3 +29,10 @@ module "eks" {
     kube_proxy_version  = var.kube_proxy_version
     coredns_version     = var.coredns_version
 }
+
+module "k8s" {
+    source            = "./modules/k8s"
+    tags              = var.tags
+    environment       = var.environment
+    eks_role_irsa_arn = module.iam.eks_role_irsa_arn
+}
