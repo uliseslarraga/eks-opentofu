@@ -30,6 +30,15 @@ module "eks" {
     coredns_version     = var.coredns_version
 }
 
+module "database" {
+    source                = "./modules/database"
+    tags                  = var.tags
+    environment           = var.environment
+    vpc_id                = module.network.vpc_id
+    private_data_subnets  = module.network.priv_data_subnet_ids
+    private_subnets_cidrs = module.network.priv_subnet_cidrs
+}
+
 module "k8s" {
     source            = "./modules/k8s"
     tags              = var.tags
