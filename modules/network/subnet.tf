@@ -1,7 +1,7 @@
 resource "aws_subnet" "public_subnet" {
-  count                   = 2
+  count                   = 3
   vpc_id     = aws_vpc.main_vpc.id
-  cidr_block = cidrsubnet(aws_vpc.main_vpc.cidr_block, 8, count.index + 2)
+  cidr_block = cidrsubnet(aws_vpc.main_vpc.cidr_block, 8, count.index + 3)
   availability_zone = data.aws_availability_zones.available_zones.names[count.index]
   map_public_ip_on_launch = true
   tags = merge(
@@ -31,7 +31,7 @@ resource "aws_route_table_association" "public_route_table_association" {
 }
 
 resource "aws_subnet" "private_subnet" {
-  count             = 2
+  count             = 3
   vpc_id     = aws_vpc.main_vpc.id
   cidr_block = cidrsubnet(aws_vpc.main_vpc.cidr_block, 8, count.index)
   availability_zone = data.aws_availability_zones.available_zones.names[count.index]
@@ -62,11 +62,11 @@ resource "aws_route_table_association" "private_route_table_association" {
 }
 
 resource "aws_subnet" "private_subnet_data" {
-  count      = 2
+  count      = 3
   vpc_id     = aws_vpc.main_vpc.id
-  cidr_block = cidrsubnet(aws_vpc.main_vpc.cidr_block, 8, count.index + 4)
+  cidr_block = cidrsubnet(aws_vpc.main_vpc.cidr_block, 8, count.index + 6)
   availability_zone = data.aws_availability_zones.available_zones.names[count.index]
-  tags = merge({Name = "private-subnet-${count.index}"}, var.tags)
+  tags = merge({Name = "private-data-subnet-${count.index}"}, var.tags)
 }
 
 resource "aws_route_table_association" "private_data_route_table_association" {
