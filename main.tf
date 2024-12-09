@@ -5,6 +5,13 @@ module "network" {
     tags        = var.tags
 }
 
+module "bastion" {
+    source           = "./modules/bastionhost"
+    vpc_id           = module.network.vpc_id
+    environment      = var.environment
+    public_subnet_id = module.network.pub_subnet_ids[0]
+}
+
 module "iam" {
     source            = "./modules/iam"
     oidc_provider_arn = module.eks.oidc_provider_arn
@@ -37,6 +44,7 @@ module "database" {
     vpc_id                = module.network.vpc_id
     private_data_subnets  = module.network.priv_data_subnet_ids
     private_subnets_cidrs = module.network.priv_subnet_cidrs
+    bastionh_sg_id        = module.bastion.bastionh_sg_id
 }
 
 module "k8s" {
