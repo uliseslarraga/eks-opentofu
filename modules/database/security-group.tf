@@ -10,16 +10,17 @@ resource "aws_vpc_security_group_ingress_rule" "allow_plsql_traffic_ipv4" {
   from_port                    = 5432
   ip_protocol                  = "tcp"
   to_port                      = 5432
-  referenced_security_group_id = "sg-05b01ff1179e84b44"
+  #TODO create SG for EKS Node group
+  referenced_security_group_id = "default-eks-nodegroup"
 }
-#resource "aws_vpc_security_group_ingress_rule" "allow_plsql_traffic_ipv4" {
-  #count             = length(var.private_subnets_cidrs)
-  #security_group_id = aws_security_group.allow_psql.id
-  #cidr_ipv4         = var.private_subnets_cidrs[count.index]
-  #from_port         = 5432
-  #ip_protocol       = "tcp"
-  #to_port           = 5432
-#}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_plsql_traffic_bh" {
+  security_group_id            = aws_security_group.allow_psql.id
+  from_port                    = 5432
+  ip_protocol                  = "tcp"
+  to_port                      = 5432
+  referenced_security_group_id = var.bastionh_sg_id
+}
 
 resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
   security_group_id = aws_security_group.allow_psql.id

@@ -22,3 +22,8 @@ variable "private_subnets_cidrs" {
   type        = any
   description = "Private data subnet cidrs"
 }
+
+variable "bastionh_sg_id" {
+  type        = any
+  description = "Security group id to allow traffic from bastion host instance"
+}
