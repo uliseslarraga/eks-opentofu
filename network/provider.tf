@@ -8,8 +8,9 @@ terraform {
 
   backend "s3" {
     bucket         = "tf-backend-ulr-2024-02-05"
-    key            = "env/dev"
+    key            = "network/terraform.tfstate"
     region         = "us-east-1"
+    workspace_key_prefix  = "environment"
   }
 
   required_version = ">= 1.2.0"
@@ -17,8 +18,4 @@ terraform {
 
 provider "aws" {
   region  = "us-east-2"
-}
-
-provider "kubernetes" {
-  config_path    = "~/.kube/config"
 }

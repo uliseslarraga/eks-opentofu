@@ -1,3 +1,13 @@
+data "terraform_remote_state" "networking" {
+  backend = "s3"
+
+  config = {
+     bucket = "tf-backend-ulr-2024-02-05"
+     key = "environment/development/network/terraform.tfstate"
+     region = "us-east-1"
+  }
+}
+
 variable "aws_region" {
   description = "region name"
   type        = string
