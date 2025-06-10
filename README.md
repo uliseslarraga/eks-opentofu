@@ -13,7 +13,7 @@ To deploy an instance of the network and compute resources, follow next steps:
 
 ```shell
 cd network
-tofu init -backend-config=env/<env>/backend.hcl
+tofu init
 ```
 
 2. Create tofu workspace
@@ -28,9 +28,10 @@ tofu workspace new development
 tofu plan -var-file="../env/<env>/terraform.tfvars"
 ```
 
-4. Deploy a new instance of the Network resources
+4. Deploy a new instance of the Network/Compute resources
 
 ```shell
+export VPC_ID=$(tofu output vpc_id) #This command should be executed only for network stack
 tofu apply -var-file="./env/<env>/terraform.tfvars"
 ```
 
@@ -76,11 +77,14 @@ argocd login $ARGOCD_SERVER --username admin --password $ARGOCD_PWD --insecure
 There is a value.yml file with values to deploy an AWS controller with helm:
 
 ```shell
-$ helm repo add eks https://aws.github.io/eks-charts
+helm repo add eks https://aws.github.io/eks-charts
 
-$ helm repo update eks
+helm repo update eks
 
-$ helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --values k8s/aws-controller/values-dev.yml
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system \
+  --values k8s/aws-controller/values-dev.yml \
+  --set vpcId=$VPC_ID \
+  --set region=us-east-2 
 ```
 
 ## RDS Setup
