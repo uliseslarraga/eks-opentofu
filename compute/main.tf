@@ -17,6 +17,7 @@ module "eks" {
     source              = "../modules/eks"
     tags                = merge({env = terraform.workspace}, var.tags) 
     environment         = var.environment
+    vpc_id              = data.terraform_remote_state.networking.outputs.vpc_id
     private_subnets     = data.terraform_remote_state.networking.outputs.priv_subnet_ids
     cluster_rol_arn     = module.iam.cluster_rol_arn
     node_role_arn       = module.iam.cluster_ng_rol_arn
@@ -38,6 +39,7 @@ module "database" {
     private_data_subnets  = data.terraform_remote_state.networking.outputs.priv_data_subnet_ids
     private_subnets_cidrs = data.terraform_remote_state.networking.outputs.priv_subnet_cidrs
     bastionh_sg_id        = module.bastion.bastionh_sg_id
+    worker_nodes_sg_id    = module.eks.worker_nodes_sg_id
 }
 
 module "k8s" {

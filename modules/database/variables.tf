@@ -27,3 +27,8 @@ variable "bastionh_sg_id" {
   type        = any
   description = "Security group id to allow traffic from bastion host instance"
 }
+
+variable "worker_nodes_sg_id" {
+  type        = any
+  description = "Security group id to allow traffic from bastion host instance"
+}

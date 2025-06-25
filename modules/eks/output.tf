@@ -13,3 +13,7 @@ output "oidc_provider_arn" {
 output "oidc_provider_url" {
   value = aws_iam_openid_connect_provider.cluster.url
 }
+
+output "worker_nodes_sg_id" {
+  value = aws_security_group.worker_nodes.id
+}
