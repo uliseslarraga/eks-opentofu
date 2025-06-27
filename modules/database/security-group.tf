@@ -10,8 +10,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_plsql_traffic_ipv4" {
   from_port                    = 5432
   ip_protocol                  = "tcp"
   to_port                      = 5432
-  #TODO create SG for EKS Node group
-  referenced_security_group_id = "default-eks-nodegroup"
+  referenced_security_group_id = var.worker_nodes_sg_id
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_plsql_traffic_bh" {

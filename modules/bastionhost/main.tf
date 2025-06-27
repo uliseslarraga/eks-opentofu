@@ -1,7 +1,7 @@
 ## AWS SSH Key Pair
 resource "aws_key_pair" "ec2-bastion-host-key-pair" {
   key_name = "ec2-bastion-host-key-pair-${var.environment}"
-  public_key = file("./ssh-key/id_rsa.pub")
+  public_key = file("../ssh-key/id_rsa.pub")
 }
 
 resource "aws_security_group" "ec2-bastion-sg" {

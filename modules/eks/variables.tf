@@ -8,6 +8,11 @@ variable "environment" {
   description = "Env name"
 }
 
+variable "vpc_id" {
+  type        = any
+  description = "VPC Id"
+}
+
 variable "private_subnets" {
   type        = any
   description = "Private subnet ids"

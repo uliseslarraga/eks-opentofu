@@ -4,6 +4,7 @@ resource "aws_eks_cluster" "cluster" {
   tags                          = merge({Name = "cluster-${var.environment}"}, var.tags)
   vpc_config {
     subnet_ids = var.private_subnets
+    security_group_ids = [aws_security_group.worker_nodes.id]
   }
   version = var.k8s_version
 }
