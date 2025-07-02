@@ -47,6 +47,33 @@ After initializing compute module repeat steps 2 to 4
 aws eks update-kubeconfig --name $(tofu output -raw -var-file="./env/dev/dev.auto.tfvars" cluster_name)
 ```
 
+## Install AWS Controller
+
+There is a value.yml file with values to deploy an AWS controller with helm:
+
+```shell
+$ helm repo add eks https://aws.github.io/eks-charts
+
+$ helm repo update eks
+
+$ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+    -n kube-system \
+    --values k8s/aws-controller/values-dev.yml \
+    --set vpcId=$VPC_ID,region=us-east-2 \
+    --version 1.13.3
+```
+
+## Deploy a demo example to validate AWS Controller
+
+```shell
+$ k apply -f k8s/sample_app/demo.yml
+
+$ export DEMO_APP_URL=$(kubectl get ingress/ingress-2048 -n game-2048 -o jsonpath="{.status.loadBalancer.ingress[0].hostname}")
+
+$ echo "Game 2048 URL: http://$DEMO_APP_URL"
+
+```
+
 ## Install ArgoCD
 There is a preconfigured values.yaml file for argocd deploy with helm:
 ```shell
@@ -54,7 +81,7 @@ There is a preconfigured values.yaml file for argocd deploy with helm:
 helm repo add argo-cd https://argoproj.github.io/argo-helm
 
 #install argocd
-helm upgrade --install argocd argo-cd/argo-cd --version 8.0.16 \
+helm upgrade --install argocd argo-cd/argo-cd --version 8.1.2 \
   --namespace "argocd" --create-namespace \
   --values k8s/argocd/values.yaml \
   --wait
@@ -69,18 +96,6 @@ echo "ArgoCD admin password: $ARGOCD_PWD"
 
 #Login with argocli
 argocd login $ARGOCD_SERVER --username admin --password $ARGOCD_PWD --insecure
-```
-
-## Install AWS Controller
-
-There is a value.yml file with values to deploy an AWS controller with helm:
-
-```shell
-$ helm repo add eks https://aws.github.io/eks-charts
-
-$ helm repo update eks
-
-$ helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --values k8s/aws-controller/values-dev.yml
 ```
 
 ## RDS Setup
