@@ -14,7 +14,12 @@ resource "aws_eks_node_group" "node_group" {
   node_group_name = "node-group-${var.environment}"
   node_role_arn   = var.node_role_arn
   subnet_ids      = var.private_subnets
-  tags = merge({Name = "node-group-${var.environment}"}, var.tags)
+  tags = merge(
+    {
+      Name = "node-group-${var.environment}", 
+      "k8s.io/cluster-autoscaler/enabled"="true",
+      "k8s.io/cluster-autoscaler/${aws_eks_cluster.cluster.name}"="owned"
+    }, var.tags)
   version         = var.k8s_nodegr_version
   scaling_config {
     desired_size = var.desired_size
