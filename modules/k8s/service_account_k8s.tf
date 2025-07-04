@@ -14,3 +14,14 @@ resource "kubernetes_service_account" "k8s_sa_controller" {
   }
   depends_on    = [null_resource.kubectl]
 }
+
+resource "kubernetes_service_account" "k8s_sa_autoscaler" {
+  metadata {
+    name        = "cluster-autoscaler-${var.environment}"
+    namespace   = "kube-system"
+    annotations = {
+      "eks.amazonaws.com/role-arn" = var.autoscaler_role_irsa_arn
+    }
+  }
+  depends_on    = [null_resource.kubectl]
+}

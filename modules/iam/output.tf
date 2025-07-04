@@ -6,6 +6,10 @@ output "eks_role_irsa_arn" {
   value = aws_iam_role.eks_role_irsa.arn
 }
 
+output "autoscaler_role_irsa_arn" {
+  value = aws_iam_role.cluster_autoscaler.arn
+}
+
 output "cluster_ng_rol_arn" {
   value = aws_iam_role.eks_node_group_role.arn
 }

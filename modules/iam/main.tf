@@ -99,3 +99,42 @@ resource "aws_iam_role_policy_attachment" "eks-controller-policy-attach" {
   role       = aws_iam_role.eks_role_irsa.name
   policy_arn = aws_iam_policy.aws_lb_controller_policy.arn
 }
+
+#Cluster Autoscaler policy
+# This policy is used by the Cluster Autoscaler to manage the scaling of the EKS cluster.
+# It allows the Cluster Autoscaler to read and write to the Auto Scaling Groups and EC2
+resource "aws_iam_policy" "cluster_autoscaler" {
+  name        = "K8sClusterAutoscalerIAMPolicy_${var.environment}"
+  path        = "/"
+  description = "Cluster autoscaler IAM Policy"
+
+  policy = file("${path.module}/policies/iam_policy_ca.json")
+}
+
+#Cluster
+resource "aws_iam_role" "cluster_autoscaler" {
+  name = "ca-irsa-role-${var.environment}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Sid    = ""
+      Effect = "Allow",
+      Principal = {
+        Federated = var.oidc_provider_arn
+      },
+      Action = "sts:AssumeRoleWithWebIdentity",
+      Condition = {
+        StringEquals = {
+            "${var.oidc_provider_url}:sub" = "system:serviceaccount:kube-system:cluster-autoscaler-development"
+            "${var.oidc_provider_url}:aud" = "sts.amazonaws.com"
+          }
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "atachment_cluster_autoscaler" {
+  role       = aws_iam_role.cluster_autoscaler.name
+  policy_arn = aws_iam_policy.cluster_autoscaler.arn
+}
