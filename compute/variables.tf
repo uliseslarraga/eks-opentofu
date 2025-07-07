@@ -67,3 +67,15 @@ variable "coredns_version" {
   type        = any
   description = "Core DNS addon version"
 }
+
+variable "create_rds" {
+  type        = bool
+  description = "Flag to deploy RDS instance"
+  default     = false
+}
+
+variable "create_bastion" {
+  type        = bool
+  description = "Flag to deploy Bastion host instance"
+  default     = false
+}

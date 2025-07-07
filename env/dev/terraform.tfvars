@@ -11,3 +11,5 @@ k8s_nodegr_version  = "1.31"
 vpc_cni_version     = "v1.19.2-eksbuild.5"
 kube_proxy_version  = "v1.31.3-eksbuild.2"
 coredns_version     = "v1.11.4-eksbuild.2"
+create_bastion      = false
+create_rds          = false
