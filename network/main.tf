@@ -1,6 +1,6 @@
 module "network" {
     source      = "../modules/network"
     vpc_cidr    = var.vpc_cidr
-    environment = var.environment
+    environment = terraform.workspace
     tags        = merge({env = terraform.workspace}, var.tags) 
 }
