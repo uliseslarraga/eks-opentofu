@@ -2,7 +2,7 @@ module "bastion" {
     source           = "../modules/bastionhost"
     count            = var.create_bastion ? 1 : 0
     vpc_id           = data.terraform_remote_state.networking.outputs.vpc_id
-    environment      = var.environment
+    environment      = terraform.workspace
     public_subnet_id = data.terraform_remote_state.networking.outputs.pub_subnet_ids[0]
 }
 
@@ -11,13 +11,13 @@ module "iam" {
     oidc_provider_arn = module.eks.oidc_provider_arn
     oidc_provider_url = module.eks.oidc_provider_url
     tags              = merge({env = terraform.workspace}, var.tags) 
-    environment       = var.environment
+    environment       = terraform.workspace
 }
 
 module "eks" {
     source              = "../modules/eks"
     tags                = merge({env = terraform.workspace}, var.tags) 
-    environment         = var.environment
+    environment         = terraform.workspace
     vpc_id              = data.terraform_remote_state.networking.outputs.vpc_id
     private_subnets     = data.terraform_remote_state.networking.outputs.priv_subnet_ids
     cluster_rol_arn     = module.iam.cluster_rol_arn
@@ -36,7 +36,7 @@ module "database" {
     source                = "../modules/database"
     count                 = var.create_rds ? 1 : 0
     tags                  = merge({env = terraform.workspace}, var.tags) 
-    environment           = var.environment
+    environment           = terraform.workspace
     vpc_id                = data.terraform_remote_state.networking.outputs.vpc_id
     private_data_subnets  = data.terraform_remote_state.networking.outputs.priv_data_subnet_ids
     private_subnets_cidrs = data.terraform_remote_state.networking.outputs.priv_subnet_cidrs
@@ -47,7 +47,7 @@ module "database" {
 module "k8s" {
     source                      = "../modules/k8s"
     tags                        = merge({env = terraform.workspace}, var.tags) 
-    environment                 = var.environment
+    environment                 = terraform.workspace
     aws_region                  = var.aws_region
     cluster_name                = module.eks.cluster_name
     eks_role_irsa_arn           = module.iam.eks_role_irsa_arn
