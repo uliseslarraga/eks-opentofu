@@ -1,5 +1,6 @@
 layer=$(layer)
 env=$(env)
+VPC_ID := $(shell cd $(layer) && tofu output -raw vpc_id) 
 
 validate_workspace:
 	cd $(layer); \
@@ -24,3 +25,19 @@ apply: validate_workspace
 	@echo "Performing tofu apply over $(layer) in $(env) environment "
 	cd $(layer); \
 	tofu apply -var-file=../env/${env}/terraform.tfvars -auto-approve
+
+aws-controller-install:
+	#TODO: Add service account name and cluster name as variables
+	@echo "Installing AWS Controller for Kubernetes"
+	@echo "Configured VPC ID: $(VPC_ID)"
+	helm repo add eks https://aws.github.io/eks-charts
+	helm repo update eks
+	helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+    	-n kube-system \
+    	--values k8s/aws-controller/values-dev.yml \
+    	--set vpcId=$(strip $(VPC_ID)) \
+		--set region=us-east-2 \
+    	--version 1.13.3
+
+cluster-as-install:
+	@echo "Installing Cluster Autoscaler for Kubernetes"
