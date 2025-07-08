@@ -4,50 +4,43 @@
 - AWS Account 
 - AWS CLI
 - 1.8.4 Opentofu
+- Helm
 
-## Deploying an infra instance
+## Deploying Network Layer
 
 To deploy an instance of the network and compute resources, follow next steps:
 
-1. Navigate into network folder and Initialize the directory 
+1. First step is to verify which resources will be deployed
 
 ```shell
-cd network
-tofu init -backend-config=env/<env>/backend.hcl
+make plan env=development layer=network
 ```
+Behind the scenes, the above command initialize tofu root module, create or select new workspace wit the given env name and runs a tofu plan with a proper terraform.tfvars file.
 
-2. Create tofu workspace
+2. Deploy a new instance of the Network resources
 
 ```shell
-tofu workspace new development
+make apply env=development layer=network
 ```
+The above command will initialize directory if it was not initialized, create or select a workspace with given name and performing a tofu apply with autoapprove flag. 
 
-3. Verify the deployed resources with terraform plan command indicating which tf variable file you will use (it should be different for each environent)
+## Deploying Compute Layer
+
+1. First step is to verify which resources will be deployed
 
 ```shell
-tofu plan -var-file="../env/<env>/terraform.tfvars"
+make plan env=development layer=compute
 ```
 
-4. Deploy a new instance of the Network resources
+2. Deploy a new instance of the Network resources
 
 ```shell
-tofu apply -var-file="./env/<env>/terraform.tfvars"
+make apply env=development layer=compute
 ```
+If you get an error creating k8s Service accounts repeate step 2
 
-5. Navigate into compute folder and Initialize the directory
 
-```shell
-cd compute
-tofu init -backend-config=env/<env>/backend.hcl
-```
-After initializing compute module repeat steps 2 to 4
-
-6. Create Kubeconfig file
-```shell
-aws eks update-kubeconfig --name $(tofu output -raw -var-file="./env/dev/dev.auto.tfvars" cluster_name)
-```
-
-7. Other Resources
+## Other Resources
 - [Install AWS Controller](docs/AWS-CONTROLLER.md)
 - [Install Argo CD](docs/ARGOCD.md)
 - [Install Cluster Autoscaler](docs/AUTOSCALER.md)

@@ -1,5 +1,5 @@
 # Setup Cluster Autoscaler
-
+[Back to main](../README.md)  
 ```shell
 #Using Autodiscovery
 $ helm install k8s-autoscaler autoscaler/cluster-autoscaler \

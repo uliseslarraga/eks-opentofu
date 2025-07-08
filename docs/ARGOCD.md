@@ -1,4 +1,5 @@
 ## Install ArgoCD
+[Back to main](../README.md)  
 There is a preconfigured values.yaml file for argocd deploy with helm:
 ```shell
 #Add argocd repo

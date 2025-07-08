@@ -1,4 +1,5 @@
 ## RDS Setup
+[Back to main](../README.md)  
 To load the sample data into the RDS sql, you should log in into bastion host with cmd psql client, you need to install psql client on ec2 with this command
 
 ```shell
