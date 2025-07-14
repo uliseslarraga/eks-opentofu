@@ -26,7 +26,6 @@ resource "aws_security_group" "ec2-bastion-sg" {
 
 ## EC2 Bastion Host Elastic IP
 resource "aws_eip" "ec2-bastion-host-eip" {
-    vpc = true
     tags = {
         Name = "ec2-bastion-host-eip-${var.environment}"
     }
