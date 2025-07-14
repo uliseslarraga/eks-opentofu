@@ -17,3 +17,7 @@ output "oidc_provider_url" {
 output "worker_nodes_sg_id" {
   value = aws_security_group.worker_nodes.id
 }
+
+output "worker_nodes_arn" {
+  value = aws_eks_node_group.node_group.arn
+}
