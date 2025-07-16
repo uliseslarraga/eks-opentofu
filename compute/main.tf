@@ -6,14 +6,6 @@ module "bastion" {
     public_subnet_id = data.terraform_remote_state.networking.outputs.pub_subnet_ids[0]
 }
 
-module "iam" {
-    source            = "../modules/iam"
-    oidc_provider_arn = module.eks.oidc_provider_arn
-    oidc_provider_url = module.eks.oidc_provider_url
-    tags              = merge({env = terraform.workspace}, var.tags) 
-    environment       = terraform.workspace
-}
-
 module "eks" {
     source              = "../modules/eks"
     tags                = merge({env = terraform.workspace}, var.tags) 
@@ -30,6 +22,16 @@ module "eks" {
     vpc_cni_version     = var.vpc_cni_version
     kube_proxy_version  = var.kube_proxy_version
     coredns_version     = var.coredns_version
+}
+
+module "iam" {
+    source            = "../modules/iam"
+    cluster_name      = module.eks.cluster_name
+    worker_nodes_arn  = module.eks.worker_nodes_arn
+    oidc_provider_arn = module.eks.oidc_provider_arn
+    oidc_provider_url = module.eks.oidc_provider_url
+    tags              = merge({env = terraform.workspace}, var.tags) 
+    environment       = terraform.workspace
 }
 
 module "database" {

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.16"
+      version = "~> 6.2.0"
     }
   }
 
@@ -12,8 +12,6 @@ terraform {
     region         = "us-east-1"
     workspace_key_prefix  = "environment"
   }
-
-  required_version = ">= 1.2.0"
 }
 
 provider "aws" {
